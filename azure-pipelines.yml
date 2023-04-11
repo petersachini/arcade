@@ -40,9 +40,9 @@ stages:
     parameters:
       artifacts:
         publish:
-          artifacts: true
-          logs: true
-          manifests: true
+          artifacts: false
+          logs: false
+          manifests: false
       enableMicrobuild: true
       enablePublishUsingPipelines: true
       enableSourceIndex: false
@@ -71,4 +71,4 @@ stages:
               /p:Test=false
             displayName: Unix Build / Publish
           - script: df -h
-            displayName: disk space before build
+            displayName: disk space after build
