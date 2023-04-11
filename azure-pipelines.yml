@@ -53,7 +53,7 @@ stages:
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
           pool:
-            name: $(DncEngInternalBuildPool)
+            name: $(DncEngPublicBuildPool)
             demands: ImageOverride -equals 1es-ubuntu-2004-open
           strategy:
             matrix:
