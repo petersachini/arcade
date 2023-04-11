@@ -51,10 +51,52 @@ stages:
         clean: all
       jobs:
       - ${{ if eq(variables._RunAsPublic, True) }}:
-        - job: Linux
+        - job: es_ubuntu_2004_open
           pool:
             name: $(DncEngPublicBuildPool)
             demands: ImageOverride -equals 1es-ubuntu-2004-open
+          strategy:
+            matrix:
+              Build_Debug:
+                _BuildConfig: Debug
+          preSteps:
+          - checkout: self
+            clean: true
+          steps:
+          - script: df -h
+            displayName: disk space before build
+          - script: eng/common/cibuild.sh
+              --configuration $(_BuildConfig)
+              --prepareMachine
+              /p:Test=false
+            displayName: Unix Build / Publish
+          - script: df -h
+            displayName: disk space after build
+        - job: es_ubuntu_1804_open
+          pool:
+            name: $(DncEngPublicBuildPool)
+            demands: ImageOverride -equals 1es-ubuntu-1804-open
+          strategy:
+            matrix:
+              Build_Debug:
+                _BuildConfig: Debug
+          preSteps:
+          - checkout: self
+            clean: true
+          steps:
+          - script: df -h
+            displayName: disk space before build
+          - script: eng/common/cibuild.sh
+              --configuration $(_BuildConfig)
+              --prepareMachine
+              /p:Test=false
+            displayName: Unix Build / Publish
+          - script: df -h
+            displayName: disk space after build
+        - job: build_ubuntu_2004_amd64_open
+          pool:
+            name: $(DncEngPublicBuildPool)
+            demands: ImageOverride -equals build.ubuntu.2004.amd64.open
           strategy:
             matrix:
               Build_Debug:
